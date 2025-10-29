@@ -12,6 +12,30 @@ function renderGroups() {
   groups.forEach((g, i) => {
     const div = document.createElement('div');
     div.textContent = g.name;
+
+    //Ungroup Button 
+    const ungroupBtn = document.createElement('button');
+    ungroupBtn.textContent = 'Ungroup';
+    ungroupBtn.style.marginLeft = '10px';
+    ungroupBtn.style.marginRight = '10px';
+    ungroupBtn.onclick = () => {
+
+      ungroupTabs(g.name);
+
+
+
+    }
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete Group';
+    deleteBtn.onclick = () => {
+      deleteGroup(g.name); 
+    }
+
+    div.appendChild(ungroupBtn);
+    div.appendChild(deleteBtn);
+
+
+
     groupList.appendChild(div);
   });
 }

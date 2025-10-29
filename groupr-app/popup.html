@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI Tab Organizer</title>
+<style>
+  body { font-family: Arial, sans-serif; width: 300px; padding:10px; }
+  input, button { padding: 8px; margin: 5px 0; width: 100%; }
+  #groupList div { background: #eee; margin: 5px 0; padding: 6px; }
+</style>
+</head>
+<body>
+  <h2>Manage Tab Groups</h2>
+  <input type="text" id="newGroupName" placeholder="Enter new group name" />
+  <button id="addGroupBtn">Add Group</button>
+  <div id="groupList"></div>
+  <button id="organizeTabsBtn">Organize Tabs</button>
+
+  <script src="popup.js"></script>
+</body>
+</html>

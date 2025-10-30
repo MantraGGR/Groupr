@@ -6,25 +6,45 @@ chrome.runtime.onMessage.addListener(async (msg, sender, sendResponse) => {
 
 
 
-          // Your tab organizing code here
+          //  tab organizing code here
           // ...
-          try {
-            const tabs = await.chrome.tabs.query({currentWindow: true}); 
-            const tabgroups = {};
-            
-
-          }
+          
 
 
 
 
 
-          sendResponse({ success: true });
-        }
-        break;
-      case 'ungroupTabs':
-        // Your ungrouping code here
-        // ...
+           // Get all tabs in the current window
+      const tabs = await chrome.tabs.query({ currentWindow: true });
+
+      // Create a map: groupName => tabIds array
+      const tabGroups = {};
+
+      // Dummy logic: assign tab to first group whose name appears in tab title or URL (case insensitive)
+      tabs.forEach(tab => {
+        const tabContent = (tab.title + ' ' + tab.url).toLowerCase();
+        const matchedGroup = msg.groups.find(g => tabContent.includes(g.name.toLowerCase()));
+        const groupName = matchedGroup ? matchedGroup.name : 'Uncategorized';
+
+        if (!tabGroups[groupName]) tabGroups[groupName] = [];
+        tabGroups[groupName].push(tab.id);
+      });
+
+      // Now create groups and move tabs into them
+      for (const [groupName, tabIds] of Object.entries(tabGroups)) {
+        if (groupName === 'Uncategorized') continue; // Skip uncategorized for now
+        const groupId = await chrome.tabs.group({ tabIds });
+        await chrome.tabGroups.update(groupId, { title: groupName });
+      }
+
+      }
+
+      // Respond success whether or not any groups were processed
+      sendResponse({ success: true });
+      break;
+    case 'ungroupTabs':
+      // Your ungrouping code here
+      // ...
         sendResponse({ success: true });
         break;
       case 'deleteGroup':

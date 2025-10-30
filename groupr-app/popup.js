@@ -66,5 +66,30 @@ organizeTabsBtn.addEventListener('click', () => {
   });
 });
 
+function ungroupTabs(groupName) {
+  chrome.runtime.sendMessage({ action: 'ungroupTabs', groupName }, (response) => {
+    if(response.success) alert(`Tabs in group "${groupName}" ungrouped.`);
+    else alert(`Failed to ungroup tabs in "${groupName}".`);
+  });
+}
+
+function deleteGroup(groupName) {
+  if(confirm(`Are you sure you want to delete the group "${groupName}" and close its tabs?`)) {
+    chrome.runtime.sendMessage({ action: 'deleteGroup', groupName }, (response) => {
+      if(response.success) {
+        alert(`Group "${groupName}" deleted.`);
+        // Remove group from local storage and re-render
+        groups = groups.filter(g => g.name !== groupName);
+        localStorage.setItem('userGroups', JSON.stringify(groups));
+        renderGroups();
+      } else {
+        alert(`Failed to delete group "${groupName}".`);
+      }
+    });
+  }
+}
+
+
+
 // Initial render on popup load
 renderGroups();

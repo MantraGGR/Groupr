@@ -1,13 +1,25 @@
 {
   "manifest_version": 3,
   "name": "AI Tab Organizer",
-  "version": "1.0.1",
+  "version": "1.0.1.0",
   "description": "Organize tabs into user-defined groups automatically",
-  "permissions": ["tabs", "tabGroups", "storage", "activeTab", "scripting"],
+  "permissions": ["tabs", "tabGroups", "storage", "activeTab", "scripting", "identity"],
+  "host_permissions": [
+    "https://generativelanguage.googleapis.com/*",
+    "http://localhost:8080/*"
+  ],
   "action": {
     "default_popup": "popup.html"
   },
   "background": {
     "service_worker": "background.js"
   }
+,
+  "oauth2": {
+    "client_id": "762767764327-g5qjo1g4vng44jnggc13jc59kvl580e6.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+  }
+
 }

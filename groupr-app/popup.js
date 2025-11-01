@@ -5,6 +5,7 @@ const groupList = document.getElementById('groupList');
 const newGroupNameInput = document.getElementById('newGroupName');
 const addGroupBtn = document.getElementById('addGroupBtn');
 const organizeTabsBtn = document.getElementById('organizeTabsBtn');
+const testLlmBtn = document.getElementById('testLlmBtn');
 
 // Function to show groups in the popup
 function renderGroups() {
@@ -62,6 +63,21 @@ organizeTabsBtn.addEventListener('click', () => {
       alert('Tabs organized!');
     } else {
       alert('Failed to organize tabs.');
+    }
+  });
+});
+
+// Test LLM button: ask user for a prompt and forward to background
+testLlmBtn.addEventListener('click', async () => {
+  const promptText = prompt('Enter a short prompt to test the LLM', 'Group these tabs by topic');
+  if (!promptText) return;
+  chrome.runtime.sendMessage({ action: 'testLLM', prompt: promptText }, (response) => {
+    if (response?.success) {
+      alert('LLM result:\n' + response.result);
+    } else if (response?.error === 'not_authorized') {
+      alert('You are not authorized to use this feature. Request access from the developer.');
+    } else {
+      alert('LLM test failed: ' + (response?.error || 'unknown'));
     }
   });
 });
